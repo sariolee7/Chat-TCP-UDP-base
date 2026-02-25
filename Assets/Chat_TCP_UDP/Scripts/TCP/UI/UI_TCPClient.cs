@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_TCPClient: MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class UI_TCPClient: MonoBehaviour
     public string serverAddress = "127.0.0.1";
     [SerializeField] private TCPClient clientReference;
     [SerializeField] private TMP_InputField messageInput;
+
+    [SerializeField] private TMP_Text messageText;
 
     private IClient _client;
     void Awake()
@@ -46,6 +49,7 @@ public class UI_TCPClient: MonoBehaviour
     void HandleMessageReceived(string text)
     {
         Debug.Log("[UI-Client] Message received from server: " + text);
+        messageText.text = text;
     }
 
     void HandleConnection()

@@ -9,6 +9,8 @@ public class TCPServerUI : MonoBehaviour
     [SerializeField] private TCPServer serverReference;
     [SerializeField] private TMP_InputField messageInput;
 
+    [SerializeField] private TMP_Text messageText;
+
     private IServer _server;
     void Awake()
     {
@@ -43,6 +45,7 @@ public class TCPServerUI : MonoBehaviour
     void HandleMessageReceived(string text)
     {
         Debug.Log("[UI-Server] Message received from client: " + text);
+        messageText.text = text;
     }
 
     void HandleConnection()
