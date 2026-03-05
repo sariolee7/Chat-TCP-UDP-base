@@ -1,9 +1,11 @@
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using System.Text;
 using SFB;
+using System.Collections;
 using System.IO;
+using System.Text;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class UIClient : MonoBehaviour
 {
@@ -25,7 +27,18 @@ public class UIClient : MonoBehaviour
     private Texture2D _loadedTexture;
     private Texture2D _receivedTexture;
 
+    [Header("UI - Audio SEND")]
+    [SerializeField] private Button playSentAudioButton;
+    [SerializeField] private Slider sentAudioSlider;
+    [SerializeField] private AudioSource sentAudioSource;
 
+    [Header("UI - Audio RECEIVE")]
+    [SerializeField] private Button playReceivedAudioButton;
+    [SerializeField] private Slider receivedAudioSlider;
+    [SerializeField] private AudioSource receivedAudioSource;
+
+    private AudioClip _loadedAudioClip;
+    private AudioClip _receivedAudioClip;
     void Awake()
     {
         _client = (IClient)clientReference;
@@ -38,9 +51,30 @@ public class UIClient : MonoBehaviour
         _client.OnDisconnected += () => Debug.Log("[UI-Client] Disconnected");
     }
 
-    public void ConnectClient()
+    public async void ConnectClient()
     {
-        _client.ConnectToServer(serverAddress, serverPort);
+        try
+        {
+            await _client.ConnectToServer(serverAddress, serverPort);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"[UI-Client] Connection failed: {ex.Message}");
+        }
+    }
+
+    void Update()
+    {
+        UpdateSlider(sentAudioSource, sentAudioSlider);
+        UpdateSlider(receivedAudioSource, receivedAudioSlider);
+    }
+
+    void UpdateSlider(AudioSource source, Slider slider)
+    {
+        if (source.clip == null)
+            return;
+
+        slider.value = source.time / source.clip.length;
     }
 
     public void LoadImageFromExplorer()
@@ -74,7 +108,70 @@ public class UIClient : MonoBehaviour
         Debug.Log("[UI-Server] Image loaded and stored as Texture2D");
     }
 
+    public void LoadAudioFromExplorer()
+    {
+        var extensions = new[]
+        {
+        new ExtensionFilter("Audio Files", "wav", "mp3", "ogg")
+    };
 
+        string[] paths = StandaloneFileBrowser.OpenFilePanel(
+            "Select Audio",
+            "",
+            extensions,
+            false
+        );
+
+        if (paths.Length == 0)
+            return;
+
+        string path = paths[0];
+
+        if (!File.Exists(path))
+            return;
+
+        StartCoroutine(LoadAudioCoroutine(path));
+    }
+
+
+    IEnumerator LoadAudioCoroutine(string path)
+    {
+        string url = "file://" + path;
+
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.UNKNOWN))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Audio load error: " + www.error);
+            }
+            else
+            {
+                _loadedAudioClip = DownloadHandlerAudioClip.GetContent(www);
+
+                sentAudioSource.clip = _loadedAudioClip;
+
+                Debug.Log($"[UI-Client] Audio loaded - Samples: {_loadedAudioClip.samples}, Channels: {_loadedAudioClip.channels}, Frequency: {_loadedAudioClip.frequency}, Length: {_loadedAudioClip.length}s");
+            }
+        }
+    }
+
+    public void PlaySentAudio()
+    {
+        if (_loadedAudioClip == null)
+            return;
+
+        sentAudioSource.Play();
+    }
+
+    public void PlayReceivedAudio()
+    {
+        if (_receivedAudioClip == null)
+            return;
+
+        receivedAudioSource.Play();
+    }
     public void Send()
     {
         if (!_client.isConnected)
@@ -96,7 +193,14 @@ public class UIClient : MonoBehaviour
             imageSent = SendImageInternal();
         }
 
-        if (!textSent && !imageSent)
+        bool audioSent = false;
+
+        if (HasAudio())
+        {
+            audioSent = SendAudioInternal();
+        }
+
+        if (!textSent && !imageSent && !audioSent)
         {
             Debug.Log("Nothing to send");
         }
@@ -112,6 +216,10 @@ public class UIClient : MonoBehaviour
         return _loadedTexture != null;
     }
 
+    private bool HasAudio()
+    {
+        return _loadedAudioClip != null;
+    }
 
     private bool SendTextInternal()
     {
@@ -145,7 +253,22 @@ public class UIClient : MonoBehaviour
         return true;
     }
 
+    private bool SendAudioInternal()
+    {
+        if (_loadedAudioClip == null)
+            return false;
 
+        byte[] audioBytes = WavUtility.FromAudioClip(_loadedAudioClip);
+
+        NetworkMessage message = new NetworkMessage(
+            MessageType.Audio,
+            audioBytes
+        );
+
+        _client.SendMessageAsync(message);
+
+        return true;
+    }
     void HandleMessageReceived(NetworkMessage message)
     {
         switch (message.Type)
@@ -162,6 +285,10 @@ public class UIClient : MonoBehaviour
 
                 _receivedTexture = tex;
                 receivedImage.texture = _receivedTexture;
+                break;
+            case MessageType.Audio:
+                _receivedAudioClip = WavUtility.ToAudioClip(message.Data, 0, "receivedAudio");
+                receivedAudioSource.clip = _receivedAudioClip;
                 break;
         }
     }
