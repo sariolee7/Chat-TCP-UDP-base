@@ -1,6 +1,6 @@
-using UnityEngine;
+using System.Text;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 
 public class UdpClientUI: MonoBehaviour
 {
@@ -8,11 +8,15 @@ public class UdpClientUI: MonoBehaviour
     public string serverAddress = "127.0.0.1";
     [SerializeField] private UDPClient clientReference;
     [SerializeField] private TMP_InputField messageInput;
+    [SerializeField] private TMP_Text messageText;
+
 
     private IClient _client;
     void Awake()
     {
         _client = clientReference;
+
+        _client.Initialize(new BinaryMessageProcessor());
     }
     void Start()
     {
@@ -24,7 +28,7 @@ public class UdpClientUI: MonoBehaviour
     {
         _client.ConnectToServer(serverAddress, serverPort);
     }
-    public void SendClientMessage()
+    public async void SendClientMessage()
     {
         if(!_client.isConnected)
         {
@@ -32,18 +36,39 @@ public class UdpClientUI: MonoBehaviour
             return;
         }
 
-        if(messageInput.text == ""){
+        if(string.IsNullOrEmpty(messageInput.text))
+        {
             Debug.Log("The chat entry is empty");
             return;
         }
 
-        string message = messageInput.text;
-        _client.SendMessageAsync(message);
+        byte[] textData = Encoding.UTF8.GetBytes(messageInput.text);
+
+        NetworkMessage message = new NetworkMessage(
+            MessageType.Text,
+            textData
+        );
+
+
+         await _client.SendMessageAsync(message);
+        messageInput.text = "";
     }
 
-    void HandleMessageReceived(string text)
+    void HandleMessageReceived(NetworkMessage message)
     {
-        Debug.Log("[UI-Client] Message received from server: " + text);
+        Debug.Log($"[UI-Server] Received Type: {message.Type}");
+
+        switch (message.Type)
+        {
+            case MessageType.Text:
+                string text = Encoding.UTF8.GetString(message.Data);
+                messageText.text = text;
+                break;
+
+            case MessageType.Image:
+                Debug.Log("Image received (implement UI handling)");
+                break;
+        }
     }
 
     void HandleConnection()

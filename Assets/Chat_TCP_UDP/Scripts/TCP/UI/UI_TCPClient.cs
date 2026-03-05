@@ -1,7 +1,6 @@
-using System;
+using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_TCPClient: MonoBehaviour
 {
@@ -16,6 +15,8 @@ public class UI_TCPClient: MonoBehaviour
     void Awake()
     {
         _client = clientReference;
+
+        _client.Initialize(new BinaryMessageProcessor());
     }
     void Start()
     {
@@ -29,7 +30,7 @@ public class UI_TCPClient: MonoBehaviour
         _client.ConnectToServer(serverAddress, serverPort);
     }
 
-    public void SendClientMessage()
+    public async void SendClientMessage()
     {
         if(!_client.isConnected)
         {
@@ -37,19 +38,37 @@ public class UI_TCPClient: MonoBehaviour
             return;
         }
 
-        if(messageInput.text == ""){
+        if(string.IsNullOrEmpty(messageInput.text))
+        {
             Debug.Log("The chat entry is empty");
             return;
         }
 
-        string message = messageInput.text;
-        _client.SendMessageAsync(message);
-    }
+        byte[] textData = Encoding.UTF8.GetBytes(messageInput.text);
 
-    void HandleMessageReceived(string text)
+        NetworkMessage message = new NetworkMessage(
+            MessageType.Text,
+            textData
+        );
+
+        await _client.SendMessageAsync(message);
+        messageInput.text = "";
+    }
+    void HandleMessageReceived(NetworkMessage message)
     {
-        Debug.Log("[UI-Client] Message received from server: " + text);
-        messageText.text = text;
+        Debug.Log($"[UI-Server] Received Type: {message.Type}");
+
+        switch (message.Type)
+        {
+            case MessageType.Text:
+                string text = Encoding.UTF8.GetString(message.Data);
+                messageText.text = text;
+                break;
+
+            case MessageType.Image:
+                Debug.Log("Image received (implement UI handling)");
+                break;
+        }
     }
 
     void HandleConnection()

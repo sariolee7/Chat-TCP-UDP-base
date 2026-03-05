@@ -1,17 +1,22 @@
-using UnityEngine;
+using System.Text;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 
 public class UdpServerUI : MonoBehaviour
 {
     public int serverPort = 5555;
     [SerializeField] private UDPServer serverReference;
     [SerializeField] private TMP_InputField messageInput;
+    [SerializeField] private TMP_Text messageText;
+
 
     private IServer _server;
     void Awake()
     {
         _server = serverReference;
+
+
+        _server.Initialize(new BinaryMessageProcessor());
     }
     void Start()
     {
@@ -19,29 +24,49 @@ public class UdpServerUI : MonoBehaviour
         _server.OnConnected += HandleConnection;
         _server.OnDisconnected += HandleDisconnection;
     }
-    public void StartServer()
+    public async void StartServer()
     {
-        _server.StartServer(serverPort);
+        await _server.StartServer(serverPort);
     }
-    public void SendServerMessage()
+    public async void SendServerMessage()
     {
         if(!_server.isServerRunning){
             Debug.Log("The server is not running");
             return;
         }
 
-        if(messageInput.text == ""){
+        if(string.IsNullOrEmpty(messageInput.text))
+        {
             Debug.Log("The chat entry is empty");
             return;
         }
 
-        string message = messageInput.text; // Get the text from the message entry
-        _server.SendMessageAsync(message); // Send message to the client
-    }
 
-    void HandleMessageReceived(string text)
+        byte[] textData = Encoding.UTF8.GetBytes(messageInput.text);
+
+        NetworkMessage message = new NetworkMessage(
+            MessageType.Text,
+            textData
+        );
+
+        await _server.SendMessageAsync(message);
+        messageInput.text = "";
+    }
+    void HandleMessageReceived(NetworkMessage message)
     {
-        Debug.Log("[UI-Server] Message received from client: " + text);
+        Debug.Log($"[UI-Server] Received Type: {message.Type}");
+
+        switch (message.Type)
+        {
+            case MessageType.Text:
+                string text = Encoding.UTF8.GetString(message.Data);
+                messageText.text = text;
+                break;
+
+            case MessageType.Image:
+                Debug.Log("Image received (implement UI handling)");
+                break;
+        }
     }
 
     void HandleConnection()
