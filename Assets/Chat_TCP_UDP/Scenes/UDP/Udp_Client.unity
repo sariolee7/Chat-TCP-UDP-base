@@ -2244,6 +2244,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1212392267}
   - component: {fileID: 1212392269}
+  - component: {fileID: 1212392272}
+  - component: {fileID: 1212392271}
+  - component: {fileID: 1212392270}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -2281,16 +2284,55 @@ MonoBehaviour:
   serverPort: 5000
   serverAddress: 192.168.0.19
   clientReference: {fileID: 1144782921}
-  messageInput: {fileID: 1155689738}
-  messageText: {fileID: 96105314}
-  receivedImage: {fileID: 627692071}
-  sentImage: {fileID: 160614458}
+  textUI: {fileID: 1212392272}
+  ImageUI: {fileID: 1212392271}
+  audioUI: {fileID: 1212392270}
+--- !u!114 &1212392270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212392266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a202ba5ab03c342b4404c9cb747cba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClientAudioUI
   playSentAudioButton: {fileID: 168544938}
   sentAudioSlider: {fileID: 168544937}
   sentAudioSource: {fileID: 168544936}
   playReceivedAudioButton: {fileID: 1043991241}
   receivedAudioSlider: {fileID: 1043991240}
   receivedAudioSource: {fileID: 1043991238}
+--- !u!114 &1212392271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212392266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8e9ded64d820a47a2caa5974a8f5ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClientImageUI
+  receivedImage: {fileID: 627692071}
+  sentImage: {fileID: 160614458}
+--- !u!114 &1212392272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212392266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1d87c46e0dff9419bc7954b874ce7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClientTextUI
+  messageInput: {fileID: 1155689738}
+  messageText: {fileID: 96105314}
 --- !u!1 &1436465545
 GameObject:
   m_ObjectHideFlags: 0
