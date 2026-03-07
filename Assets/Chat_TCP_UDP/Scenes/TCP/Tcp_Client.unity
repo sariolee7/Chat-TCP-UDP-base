@@ -2172,6 +2172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioUI
   sentAudioSlider: {fileID: 2114277476770360295}
   sentAudioSource: {fileID: 2114277476770360294}
+  playReceivedAudioButton: {fileID: 0}
   receivedAudioSlider: {fileID: 1673668671}
   receivedAudioSource: {fileID: 1673668670}
 --- !u!114 &1212392271
