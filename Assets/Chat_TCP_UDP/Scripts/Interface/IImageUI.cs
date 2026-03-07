@@ -11,6 +11,4 @@ public interface IImageUI
 
     void LoadImageFromExplorer();
     void ClearImage();
-
-    void SetReceivedImage(byte[] data);
 }

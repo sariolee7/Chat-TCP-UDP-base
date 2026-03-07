@@ -8,75 +8,63 @@ using UnityEngine.UI;
 
 public class AudioUI : MonoBehaviour, IAudioUI
 {
-    [Header("UI - Audio SEND")]
-    [SerializeField] private Slider sentAudioSlider;
+    [Header("UI - Audio SEND (Preview)")]
     [SerializeField] private AudioSource sentAudioSource;
+    [SerializeField] private Slider sentAudioSlider;
+    [SerializeField] private Button playSentButton;
 
-    [Header("UI - Audio RECEIVE")]
-    [SerializeField] private Button playReceivedAudioButton;
-    [SerializeField] private Slider receivedAudioSlider;
-    [SerializeField] private AudioSource receivedAudioSource;
+    [Header("Chat Content")]
+    [SerializeField] private Transform chatContent;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject sentAudioPrefab;
+    [SerializeField] private GameObject receivedAudioPrefab;
+
+    [Header("Colors")]
+    [SerializeField] private Color sentColor = new Color(0.3f, 0.6f, 1f);
+    [SerializeField] private Color receivedColor = new Color(0.8f, 0.8f, 0.8f);
 
     public event Action OnAudioLoaded;
     public event Action OnAudioCleared;
 
     private AudioClip _loadedAudioClip;
-    private AudioClip _receivedAudioClip;
 
     void Awake()
     {
-        playReceivedAudioButton.interactable = false;
+        if (sentAudioSource == null)
+            sentAudioSource = GetComponent<AudioSource>();
+
+        if (playSentButton != null)
+            playSentButton.onClick.AddListener(PlaySentAudio);
+
+        sentAudioSource.clip = null;
     }
 
-    public bool HasAudio()
+    void Update()
     {
-        return _loadedAudioClip != null;
+        UpdateAudioSlider();
     }
 
-    public AudioClip GetLoadedAudio()
-    {
-        return _loadedAudioClip;
-    }
+    public bool HasAudio() => _loadedAudioClip != null;
+    public AudioClip GetLoadedAudio() => _loadedAudioClip;
 
     public byte[] GetAudioBytes()
     {
-        if (_loadedAudioClip == null)
-            return null;
-
+        if (_loadedAudioClip == null) return null;
         return WavUtility.FromAudioClip(_loadedAudioClip);
     }
 
-
-    public void SetWaitingForAudio()
-    {
-        playReceivedAudioButton.interactable = false;
-    }
     public void LoadAudioFromExplorer()
     {
-        var extensions = new[]
-        {
-            new ExtensionFilter("Audio Files", "wav", "mp3", "ogg")
-        };
+        var extensions = new[] { new ExtensionFilter("Audio Files", "wav", "mp3", "ogg") };
+        string[] paths = StandaloneFileBrowser.OpenFilePanel("Select Audio", "", extensions, false);
 
-        string[] paths = StandaloneFileBrowser.OpenFilePanel(
-            "Select Audio",
-            "",
-            extensions,
-            false
-        );
+        if (paths.Length == 0 || !File.Exists(paths[0])) return;
 
-        if (paths.Length == 0)
-            return;
-
-        string path = paths[0];
-
-        if (!File.Exists(path))
-            return;
-
-        StartCoroutine(LoadAudioCoroutine(path));
+        StartCoroutine(LoadAudioCoroutine(paths[0]));
     }
 
-    IEnumerator LoadAudioCoroutine(string path)
+    private IEnumerator LoadAudioCoroutine(string path)
     {
         string url = "file://" + path;
 
@@ -92,7 +80,6 @@ public class AudioUI : MonoBehaviour, IAudioUI
             {
                 _loadedAudioClip = DownloadHandlerAudioClip.GetContent(www);
                 sentAudioSource.clip = _loadedAudioClip;
-
                 OnAudioLoaded?.Invoke();
             }
         }
@@ -102,46 +89,59 @@ public class AudioUI : MonoBehaviour, IAudioUI
     {
         _loadedAudioClip = null;
         sentAudioSource.clip = null;
-
+        
+        if (sentAudioSlider != null)
+            sentAudioSlider.value = 0;
+            
         OnAudioCleared?.Invoke();
     }
 
     public void PlaySentAudio()
     {
-        if (_loadedAudioClip == null)
-            return;
-
+        if (_loadedAudioClip == null) return;
         sentAudioSource.Play();
     }
 
-    public void PlayReceivedAudio()
+    public void UpdateAudioSlider()
     {
-        if (_receivedAudioClip == null)
-            return;
-
-        receivedAudioSource.Play();
+        if (sentAudioSlider == null || sentAudioSource == null) return;
+        if (sentAudioSource.clip == null) return;
+        
+        sentAudioSlider.value = sentAudioSource.time / sentAudioSource.clip.length;
     }
 
-    public void SetReceivedAudio(byte[] data)
+
+    public void InstantiateSentAudio(byte[] audioBytes)
     {
-        _receivedAudioClip = WavUtility.ToAudioClip(data, 0, "receivedAudio");
-        receivedAudioSource.clip = _receivedAudioClip;
+        if (sentAudioPrefab == null || chatContent == null) return;
 
-        playReceivedAudioButton.interactable = true;
+        GameObject msg = Instantiate(sentAudioPrefab, chatContent);
+        AudioMessageUI audioMsg = msg.GetComponent<AudioMessageUI>();
 
+        if (audioMsg != null)
+        {
+            audioMsg.Initialize(audioBytes);
+        }
+
+        Image bg = msg.GetComponent<Image>();
+        if (bg != null)
+            bg.color = sentColor;
     }
 
-    public void UpdateAudioSliders()
+    public void InstantiateReceivedAudio(byte[] audioBytes)
     {
-        UpdateSlider(sentAudioSource, sentAudioSlider);
-        UpdateSlider(receivedAudioSource, receivedAudioSlider);
-    }
+        if (receivedAudioPrefab == null || chatContent == null) return;
 
-    void UpdateSlider(AudioSource source, Slider slider)
-    {
-        if (source.clip == null)
-            return;
+        GameObject msg = Instantiate(receivedAudioPrefab, chatContent);
+        AudioMessageUI audioMsg = msg.GetComponent<AudioMessageUI>();
 
-        slider.value = source.time / source.clip.length;
+        if (audioMsg != null)
+        {
+            audioMsg.Initialize(audioBytes);
+        }
+
+        Image bg = msg.GetComponent<Image>();
+        if (bg != null)
+            bg.color = receivedColor;
     }
 }
