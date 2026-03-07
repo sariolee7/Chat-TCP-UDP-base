@@ -14,5 +14,5 @@ public enum MessageType
 {
     Text = 1,
     Image = 2,
-    Audio = 3
+    Audio = 3,
 }

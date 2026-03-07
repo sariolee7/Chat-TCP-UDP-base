@@ -1,14 +1,25 @@
-using System;
 using SFB;
+using System;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ImageUI : MonoBehaviour, IImageUI
 {
-    [Header("UI - Images")]
-    [SerializeField] private RawImage receivedImage;
+    [Header("Preview")]
     [SerializeField] private RawImage sentImage;
+
+    [Header("Chat Content")]
+    [SerializeField] private Transform chatContent;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject sentImagePrefab;
+    [SerializeField] private GameObject receivedImagePrefab;
+
+    [Header("Colors")]
+    [SerializeField] private Color sentColor = new Color(0.3f, 0.6f, 1f);
+    [SerializeField] private Color receivedColor = new Color(0.8f, 0.8f, 0.8f);
 
     public event Action OnImageLoaded;
     public event Action OnImageCleared;
@@ -65,12 +76,30 @@ public class ImageUI : MonoBehaviour, IImageUI
         OnImageCleared?.Invoke();
     }
 
-    public void SetReceivedImage(byte[] data)
+    public void InstantiateSentImage(Texture2D texture)
+    {
+        GameObject msg = Instantiate(sentImagePrefab, chatContent);
+
+        Image bg = msg.GetComponent<Image>();
+        bg.color = sentColor;
+
+        RawImage image = msg.GetComponentInChildren<RawImage>();
+        image.texture = texture;
+    }
+
+    public void InstantiateReceivedImage(byte[] data)
     {
         Texture2D tex = new Texture2D(2, 2);
         tex.LoadImage(data);
 
         _receivedTexture = tex;
-        receivedImage.texture = _receivedTexture;
+
+        GameObject msg = Instantiate(receivedImagePrefab, chatContent);
+
+        Image bg = msg.GetComponent<Image>();
+        bg.color = receivedColor;
+
+        RawImage image = msg.GetComponentInChildren<RawImage>();
+        image.texture = _receivedTexture;
     }
 }

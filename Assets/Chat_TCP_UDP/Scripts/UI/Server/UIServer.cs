@@ -1,4 +1,5 @@
 using System.Text;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class UIServer : MonoBehaviour
@@ -26,11 +27,6 @@ public class UIServer : MonoBehaviour
         _server.OnDisconnected += () => Debug.Log("[UI-Server] Disconnected");
     }
 
-    void Update()
-    {
-        audioUI.UpdateAudioSliders();
-    }
-
     public void StartServer()
     {
         _server.StartServer(serverPort);
@@ -46,15 +42,6 @@ public class UIServer : MonoBehaviour
         audioUI.LoadAudioFromExplorer();
     }
 
-    public void PlaySentAudio()
-    {
-        audioUI.PlaySentAudio();
-    }
-
-    public void PlayReceivedAudio()
-    {
-        audioUI.PlayReceivedAudio();
-    }
 
     public void Send()
     {
@@ -68,18 +55,24 @@ public class UIServer : MonoBehaviour
         bool imageSent = false;
         bool audioSent = false;
 
-        if (textUI.HasText())
+        bool hasText = textUI.HasText();
+        bool hasImage = imageUI.HasImage();
+        bool hasAudio = audioUI.HasAudio();
+
+
+        if (hasText)
             textSent = SendTextInternal();
 
-        if (imageUI.HasImage())
+         if (hasImage)
             imageSent = SendImageInternal();
 
-        if (audioUI.HasAudio())
+
+        if (hasAudio)
             audioSent = SendAudioInternal();
 
         ChatInputStateController.Instance.OnMessageSent();
 
-        if (!textSent && !imageSent && !audioSent)
+        if (!hasText && !imageSent && !hasAudio)
             Debug.Log("Nothing to send");
 
         if (imageSent)
@@ -94,6 +87,8 @@ public class UIServer : MonoBehaviour
 
     bool SendTextInternal()
     {
+        string text = textUI.GetText();
+
         byte[] textData = Encoding.UTF8.GetBytes(textUI.GetText());
 
         NetworkMessage message = new NetworkMessage(
@@ -102,6 +97,9 @@ public class UIServer : MonoBehaviour
         );
 
         _server.SendMessageAsync(message);
+
+        textUI.InstantiateSentText(text);
+
 
         textUI.ClearInput();
 
@@ -125,8 +123,11 @@ public class UIServer : MonoBehaviour
 
         _server.SendMessageAsync(message);
 
+        imageUI.InstantiateSentImage(loadedTexture);
+
         return true;
     }
+
 
     bool SendAudioInternal()
     {
@@ -139,6 +140,7 @@ public class UIServer : MonoBehaviour
 
         _server.SendMessageAsync(message);
 
+        audioUI.InstantiateSentAudio(audioBytes);
         return true;
     }
 
@@ -150,19 +152,19 @@ public class UIServer : MonoBehaviour
             case MessageType.Text:
 
                 string text = Encoding.UTF8.GetString(message.Data);
-                textUI.SetReceivedText(text);
+                textUI.InstantiateReceivedText(text);
 
                 break;
 
             case MessageType.Image:
 
-                imageUI.SetReceivedImage(message.Data);
+                imageUI.InstantiateReceivedImage(message.Data);
 
                 break;
 
             case MessageType.Audio:
 
-                audioUI.SetReceivedAudio(message.Data);
+                audioUI.InstantiateReceivedAudio(message.Data);
 
                 break;
         }

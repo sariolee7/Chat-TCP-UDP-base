@@ -27,11 +27,6 @@ public class UIClient : MonoBehaviour
         _client.OnDisconnected += () => Debug.Log("[UI-Client] Disconnected");
     }
 
-    void Update()
-    {
-        audioUI.UpdateAudioSliders();
-    }
-
     public void ConnectClient()
     {
         _client.ConnectToServer(serverAddress, serverPort);
@@ -47,15 +42,6 @@ public class UIClient : MonoBehaviour
         audioUI.LoadAudioFromExplorer();
     }
 
-    public void PlaySentAudio()
-    {
-        audioUI.PlaySentAudio();
-    }
-
-    public void PlayReceivedAudio()
-    {
-        audioUI.PlayReceivedAudio();
-    }
 
     public void Send()
     {
@@ -69,13 +55,19 @@ public class UIClient : MonoBehaviour
         bool imageSent = false;
         bool audioSent = false;
 
-        if (textUI.HasText())
+        bool hasText = textUI.HasText();
+        bool hasImage = ImageUI.HasImage();
+        bool hasAudio = audioUI.HasAudio();
+
+
+        if (hasText)
             textSent = SendTextInternal();
 
-        if (ImageUI.HasImage())
+        if (hasImage)
             imageSent = SendImageInternal();
+  
 
-        if (audioUI.HasAudio())
+        if (hasAudio)
             audioSent = SendAudioInternal();
 
 
@@ -94,6 +86,8 @@ public class UIClient : MonoBehaviour
 
     bool SendTextInternal()
     {
+        string text = textUI.GetText();
+
         byte[] textData = Encoding.UTF8.GetBytes(textUI.GetText());
 
         NetworkMessage message = new NetworkMessage(
@@ -103,6 +97,8 @@ public class UIClient : MonoBehaviour
 
         _client.SendMessageAsync(message);
 
+        textUI.InstantiateSentText(text);
+
         textUI.ClearInput();
 
         return true;
@@ -110,7 +106,6 @@ public class UIClient : MonoBehaviour
 
     bool SendImageInternal()
     {
-        
         Texture2D loadedTexture = ImageUI.GetLoadedTexture();
         if (loadedTexture == null)
             return false;
@@ -124,8 +119,11 @@ public class UIClient : MonoBehaviour
 
         _client.SendMessageAsync(message);
 
+        ImageUI.InstantiateSentImage(loadedTexture);
+
         return true;
     }
+
 
     bool SendAudioInternal()
     {
@@ -137,6 +135,7 @@ public class UIClient : MonoBehaviour
         );
 
         _client.SendMessageAsync(message);
+        audioUI.InstantiateSentAudio(audioBytes);
 
         return true;
     }
@@ -148,19 +147,18 @@ public class UIClient : MonoBehaviour
             case MessageType.Text:
 
                 string text = Encoding.UTF8.GetString(message.Data);
-                textUI.SetReceivedText(text);
-
+                textUI.InstantiateReceivedText(text);
                 break;
 
             case MessageType.Image:
 
-                ImageUI.SetReceivedImage(message.Data);
+                ImageUI.InstantiateReceivedImage(message.Data);
 
                 break;
 
             case MessageType.Audio:
 
-                audioUI.SetReceivedAudio(message.Data);
+                audioUI.InstantiateReceivedAudio(message.Data);
 
                 break;
         }

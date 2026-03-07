@@ -1,12 +1,23 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TextUI : MonoBehaviour, ITextUI
 {
-    [Header("UI - Text")]
+    [Header("Input")]
     [SerializeField] private TMP_InputField messageInput;
-    [SerializeField] private TMP_Text messageText;
+
+    [Header("Chat Content")]
+    [SerializeField] private Transform chatContent;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject sentTextPrefab;
+    [SerializeField] private GameObject receivedTextPrefab;
+
+    [Header("Colors")]
+    [SerializeField] private Color sentColor = new Color(0.3f, 0.6f, 1f);
+    [SerializeField] private Color receivedColor = new Color(0.8f, 0.8f, 0.8f);
 
     public event Action<string> OnTextChanged;
     public event Action OnTextCleared;
@@ -37,8 +48,25 @@ public class TextUI : MonoBehaviour, ITextUI
         OnTextCleared?.Invoke();
     }
 
-    public void SetReceivedText(string text)
+    public void InstantiateSentText(string text)
     {
-        messageText.text = text;
+        GameObject msg = Instantiate(sentTextPrefab, chatContent);
+
+        TMP_Text textComponent = msg.GetComponentInChildren<TMP_Text>();
+        textComponent.text = text;
+
+        Image bg = msg.GetComponent<Image>();
+         bg.color = sentColor;
+    }
+
+    public void InstantiateReceivedText(string text)
+    {
+        GameObject msg = Instantiate(receivedTextPrefab, chatContent);
+
+        TMP_Text textComponent = msg.GetComponentInChildren<TMP_Text>();
+        textComponent.text = text;
+
+        Image bg = msg.GetComponent<Image>();
+        bg.color = receivedColor;
     }
 }

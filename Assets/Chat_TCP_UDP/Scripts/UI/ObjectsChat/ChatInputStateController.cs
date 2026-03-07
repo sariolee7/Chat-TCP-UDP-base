@@ -103,7 +103,12 @@ public class ChatInputStateController : MonoBehaviour
 
     void CheckSendButton(string text)
     {
-        sendButton.interactable = !string.IsNullOrEmpty(text);
+        bool hasText = !string.IsNullOrEmpty(text);
+
+        sendButton.interactable = hasText;
+
+        imageButton.interactable = !hasText;
+        audioButton.interactable = !hasText;
     }
 
     void HandleImageLoaded()
@@ -112,6 +117,8 @@ public class ChatInputStateController : MonoBehaviour
             return;
 
         currentState = ChatState.ImageLoaded;
+
+        textInput.interactable = false;
 
         audioButton.interactable = false;
         sendButton.interactable = true;

@@ -15,9 +15,5 @@ public interface IAudioUI
     void ClearAudio();
 
     void PlaySentAudio();
-    void PlayReceivedAudio();
 
-    void SetReceivedAudio(byte[] data);
-
-    void UpdateAudioSliders();
 }

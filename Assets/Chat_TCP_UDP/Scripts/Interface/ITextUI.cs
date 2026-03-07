@@ -8,5 +8,4 @@ public interface ITextUI
     bool HasText();
     string GetText();
     void ClearInput();
-    void SetReceivedText(string text);
 }

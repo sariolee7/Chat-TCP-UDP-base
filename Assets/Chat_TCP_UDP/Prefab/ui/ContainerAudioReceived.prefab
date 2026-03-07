@@ -234,7 +234,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.548
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -495,8 +495,9 @@ GameObject:
   - component: {fileID: 1936530697951557748}
   - component: {fileID: 5355877159072499253}
   - component: {fileID: 3943972177889809556}
+  - component: {fileID: 6496749640701105837}
   m_Layer: 5
-  m_Name: ContainerAudio
+  m_Name: ContainerAudioReceived
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -698,6 +699,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6496749640701105837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4312646099016357188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae5d7f10c323d3243b23fbf73625dba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioMessageUI
+  playButton: {fileID: 4680912840814815121}
+  slider: {fileID: 7272394063116631730}
+  audioSource: {fileID: 3943972177889809556}
 --- !u!1 &5111347026393697547
 GameObject:
   m_ObjectHideFlags: 0
