@@ -11,14 +11,13 @@ public class UIClient : MonoBehaviour
     private IClient _client;
 
     [Header("Handlers")]
-    [SerializeField] private ClientTextUI textUI;
-    [SerializeField] private ClientImageUI ImageUI;
-    [SerializeField] private ClientAudioUI audioUI;
+    [SerializeField] private TextUI textUI;
+    [SerializeField] private ImageUI ImageUI;
+    [SerializeField] private AudioUI audioUI;
 
     void Awake()
     {
         _client = (IClient)clientReference;
-        _client.Initialize(new BinaryMessageProcessor());
     }
 
     void Start()
@@ -79,8 +78,18 @@ public class UIClient : MonoBehaviour
         if (audioUI.HasAudio())
             audioSent = SendAudioInternal();
 
+
         if (!textSent && !imageSent && !audioSent)
             Debug.Log("Nothing to send");
+
+        if (imageSent)
+            ImageUI.ClearImage();
+
+        if (audioSent)
+            audioUI.ClearAudio();
+
+        ChatInputStateController.Instance.OnMessageSent();
+
     }
 
     bool SendTextInternal()
@@ -131,6 +140,7 @@ public class UIClient : MonoBehaviour
 
         return true;
     }
+
     void HandleMessageReceived(NetworkMessage message)
     {
         switch (message.Type)

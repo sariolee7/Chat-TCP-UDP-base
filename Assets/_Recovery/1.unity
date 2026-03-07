@@ -216,10 +216,15 @@ RectTransform:
   - {fileID: 1665891642}
   - {fileID: 801738044}
   - {fileID: 1916471513}
+  - {fileID: 534087930}
+  - {fileID: 646310110}
+  - {fileID: 476240691}
+  - {fileID: 1155689739}
   - {fileID: 2042418412}
   - {fileID: 881114758}
   - {fileID: 1973916930}
-  - {fileID: 1785278154}
+  - {fileID: 1673668669}
+  - {fileID: 1511942201}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -317,7 +322,6 @@ GameObject:
   - component: {fileID: 476240691}
   - component: {fileID: 476240694}
   - component: {fileID: 476240693}
-  - component: {fileID: 476240695}
   - component: {fileID: 476240692}
   m_Layer: 5
   m_Name: BtnLoadAudio
@@ -333,18 +337,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476240690}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 434898930}
-  m_Father: {fileID: 1785278154}
+  m_Father: {fileID: 210814580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 311, y: -159}
-  m_SizeDelta: {x: 78.2, y: 30}
+  m_AnchoredPosition: {x: -108, y: 53.2}
+  m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &476240692
 MonoBehaviour:
@@ -440,19 +444,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476240690}
   m_CullTransparentMesh: 1
---- !u!114 &476240695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 476240690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
-  elementType: 4
 --- !u!1 &534087929
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +455,6 @@ GameObject:
   - component: {fileID: 534087930}
   - component: {fileID: 534087933}
   - component: {fileID: 534087932}
-  - component: {fileID: 534087934}
   - component: {fileID: 534087931}
   m_Layer: 5
   m_Name: BtnSend
@@ -480,18 +470,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534087929}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 848624593}
-  m_Father: {fileID: 1785278154}
+  m_Father: {fileID: 210814580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 295, y: -128}
-  m_SizeDelta: {x: 105.35, y: 30}
+  m_AnchoredPosition: {x: -298, y: 13.000061}
+  m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &534087931
 MonoBehaviour:
@@ -587,19 +577,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534087929}
   m_CullTransparentMesh: 1
---- !u!114 &534087934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534087929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
-  elementType: 5
 --- !u!1 &646310109
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,7 +588,6 @@ GameObject:
   - component: {fileID: 646310110}
   - component: {fileID: 646310113}
   - component: {fileID: 646310112}
-  - component: {fileID: 646310114}
   - component: {fileID: 646310111}
   m_Layer: 5
   m_Name: BtnLoadImage
@@ -627,18 +603,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646310109}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1140981342}
-  m_Father: {fileID: 1785278154}
+  m_Father: {fileID: 210814580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 221, y: -160}
-  m_SizeDelta: {x: 77.5, y: 30}
+  m_AnchoredPosition: {x: -108, y: 18.6}
+  m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &646310111
 MonoBehaviour:
@@ -734,19 +710,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646310109}
   m_CullTransparentMesh: 1
---- !u!114 &646310114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 646310109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
-  elementType: 3
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,7 +1661,6 @@ GameObject:
   - component: {fileID: 1155689739}
   - component: {fileID: 1155689741}
   - component: {fileID: 1155689740}
-  - component: {fileID: 1155689742}
   - component: {fileID: 1155689738}
   m_Layer: 5
   m_Name: InputMessage
@@ -1815,18 +1777,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1155689737}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2095915661}
-  m_Father: {fileID: 1785278154}
+  m_Father: {fileID: 210814580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 114, y: -207}
-  m_SizeDelta: {x: 211.6, y: 30}
+  m_AnchoredPosition: {x: 107, y: -172.2}
+  m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1155689740
 MonoBehaviour:
@@ -1866,19 +1828,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1155689737}
   m_CullTransparentMesh: 1
---- !u!114 &1155689742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155689737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
-  elementType: 0
 --- !u!1 &1212392266
 GameObject:
   m_ObjectHideFlags: 0
@@ -1940,11 +1889,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1212392266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2793b8541ea52ab4bb837744d58455b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 27a404dd82340a54c808c2406c55bbf9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AudioUI
+  m_EditorClassIdentifier: Assembly-CSharp::ServerAudioUI
+  playSentAudioButton: {fileID: 1673668672}
   sentAudioSlider: {fileID: 1673668671}
   sentAudioSource: {fileID: 1673668670}
+  playReceivedAudioButton: {fileID: 1973916932}
   receivedAudioSlider: {fileID: 1973916931}
   receivedAudioSource: {fileID: 1973916929}
 --- !u!114 &1212392271
@@ -1956,9 +1907,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1212392266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86de77c71d684f349ade7a5e10b1028c, type: 3}
+  m_Script: {fileID: 11500000, guid: 260b330e16cd0ce4b924a6fe33c164b2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ImageUI
+  m_EditorClassIdentifier: Assembly-CSharp::ServerImageUI
   receivedImage: {fileID: 881114759}
   sentImage: {fileID: 1511942202}
 --- !u!114 &1212392272
@@ -1970,9 +1921,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1212392266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da4dc84c5ec18a04a9448f2e75a18fac, type: 3}
+  m_Script: {fileID: 11500000, guid: 843a69e29a1ac2145b454477b35b67e1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TextUI
+  m_EditorClassIdentifier: Assembly-CSharp::ServerTextUI
   messageInput: {fileID: 1155689738}
   messageText: {fileID: 2042418413}
 --- !u!1 &1436465545
@@ -2065,7 +2016,6 @@ GameObject:
   - component: {fileID: 1511942201}
   - component: {fileID: 1511942203}
   - component: {fileID: 1511942202}
-  - component: {fileID: 1511942204}
   m_Layer: 5
   m_Name: ImagenEnvio
   m_TagString: Untagged
@@ -2080,17 +2030,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511942200}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1785278154}
+  m_Father: {fileID: 210814580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 112, y: -318}
-  m_SizeDelta: {x: 200, y: 150}
+  m_AnchoredPosition: {x: 293.1, y: -1.4}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1511942202
 MonoBehaviour:
@@ -2127,19 +2077,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511942200}
   m_CullTransparentMesh: 1
---- !u!114 &1511942204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1511942200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
-  elementType: 1
 --- !u!1 &1665891641
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,7 +2158,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1785278154}
+    m_TransformParent: {fileID: 210814580}
     m_Modifications:
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_Pivot.x
@@ -2273,23 +2210,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 494
+      value: 296.8
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -203.9
+      value: -120.6
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2394,10 +2331,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4312646099016357188, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 1673668673}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
 --- !u!224 &1673668669 stripped
 RectTransform:
@@ -2420,83 +2354,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
---- !u!114 &1673668673
+--- !u!114 &1673668672 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1745916260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
-  elementType: 2
---- !u!1 &1745916260 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4312646099016357188, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4680912840814815121, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
   m_PrefabInstance: {fileID: 1673668668}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1785278153
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1785278154}
-  - component: {fileID: 1785278155}
-  m_Layer: 5
-  m_Name: ControllerUIPreview
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1785278154
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785278153}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1511942201}
-  - {fileID: 1673668669}
-  - {fileID: 1155689739}
-  - {fileID: 646310110}
-  - {fileID: 476240691}
-  - {fileID: 534087930}
-  m_Father: {fileID: 210814580}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1785278155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785278153}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b72370b0b3c4f234e91f5cbfe1269afd, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ChatInputStateController
-  textUI: {fileID: 1212392272}
-  imageUI: {fileID: 1212392271}
-  audioUI: {fileID: 1212392270}
-  imagePreviewTarget: {x: 112, y: -121}
-  audioPreviewTarget: {x: 118, y: -203.9}
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &1916471512
 GameObject:
   m_ObjectHideFlags: 0
@@ -2832,6 +2700,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!114 &1973916932 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4680912840814815121, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
+  m_PrefabInstance: {fileID: 1973916928}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &2010371538
 GameObject:
   m_ObjectHideFlags: 0

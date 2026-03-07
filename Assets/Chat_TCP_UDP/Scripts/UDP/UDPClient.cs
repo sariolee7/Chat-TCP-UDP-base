@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -10,18 +11,14 @@ public class UDPClient : MonoBehaviour, IClient
     private UdpClient udpClient;
     private IPEndPoint remoteEndPoint;
 
-    private IMessageProcessor _messageProcessor;
-
     public bool isConnected { get; private set; }
 
     public event Action<NetworkMessage> OnMessageReceived;
     public event Action OnConnected;
     public event Action OnDisconnected;
 
-    public void Initialize(IMessageProcessor processor)
-    {
-        _messageProcessor = processor;
-    }
+    private UDPChunkSender chunkSender = new UDPChunkSender();
+    private UDPChunkReceiver chunkReceiver = new UDPChunkReceiver();
 
     public async Task ConnectToServer(string ipAddress, int port)
     {
@@ -52,7 +49,6 @@ public class UDPClient : MonoBehaviour, IClient
                 }
                 catch (ObjectDisposedException)
                 {
-                    // El socket fue cerrado intencionalmente
                     break;
                 }
 
@@ -68,8 +64,12 @@ public class UDPClient : MonoBehaviour, IClient
                     continue;
                 }
 
-                NetworkMessage message =
-                    _messageProcessor.Deserialize(result.Buffer);
+                byte[] fullMessage = chunkReceiver.HandlePacket(result.Buffer);
+
+                if (fullMessage == null)
+                    continue;
+
+                NetworkMessage message = DeserializeMessage(fullMessage);
 
                 Debug.Log($"[UDP Client] Received Type: {message.Type}");
 
@@ -91,11 +91,49 @@ public class UDPClient : MonoBehaviour, IClient
             return;
         }
 
-        byte[] data = _messageProcessor.Serialize(message);
+        byte[] data = SerializeMessage(message);
 
-        await udpClient.SendAsync(data, data.Length, remoteEndPoint);
+        if (chunkSender.NeedsChunking(data))
+        {
+            var packets = chunkSender.CreateChunks(data);
+
+            foreach (var packet in packets)
+            {
+                await udpClient.SendAsync(packet, packet.Length, remoteEndPoint);
+            }
+        }
+        else
+        {
+            await udpClient.SendAsync(data, data.Length, remoteEndPoint);
+        }
 
         Debug.Log($"[UDP Client] Sent Type: {message.Type}");
+    }
+
+    private byte[] SerializeMessage(NetworkMessage message)
+    {
+        using (MemoryStream ms = new MemoryStream())
+        using (BinaryWriter writer = new BinaryWriter(ms))
+        {
+            writer.Write((int)message.Type);
+            writer.Write(message.Data.Length);
+            writer.Write(message.Data);
+
+            return ms.ToArray();
+        }
+    }
+
+    private NetworkMessage DeserializeMessage(byte[] data)
+    {
+        using (MemoryStream ms = new MemoryStream(data))
+        using (BinaryReader reader = new BinaryReader(ms))
+        {
+            MessageType type = (MessageType)reader.ReadInt32();
+            int length = reader.ReadInt32();
+            byte[] messageData = reader.ReadBytes(length);
+
+            return new NetworkMessage(type, messageData);
+        }
     }
 
     public void Disconnect()

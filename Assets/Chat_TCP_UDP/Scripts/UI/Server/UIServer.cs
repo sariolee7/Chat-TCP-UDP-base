@@ -10,14 +10,13 @@ public class UIServer : MonoBehaviour
     private IServer _server;
 
     [Header("Handlers")]
-    [SerializeField] private ServerTextUI textUI;
-    [SerializeField] private ServerImageUI imageUI;
-    [SerializeField] private ServerAudioUI audioUI;
+    [SerializeField] private TextUI textUI;
+    [SerializeField] private ImageUI imageUI;
+    [SerializeField] private AudioUI audioUI;
 
     void Awake()
     {
         _server = (IServer)serverReference;
-        _server.Initialize(new BinaryMessageProcessor());
     }
 
     void Start()
@@ -78,8 +77,19 @@ public class UIServer : MonoBehaviour
         if (audioUI.HasAudio())
             audioSent = SendAudioInternal();
 
+        ChatInputStateController.Instance.OnMessageSent();
+
         if (!textSent && !imageSent && !audioSent)
             Debug.Log("Nothing to send");
+
+        if (imageSent)
+            imageUI.ClearImage();
+
+        if (audioSent)
+            audioUI.ClearAudio();
+
+        ChatInputStateController.Instance.OnMessageSent();
+
     }
 
     bool SendTextInternal()
@@ -111,6 +121,7 @@ public class UIServer : MonoBehaviour
             MessageType.Image,
             imageBytes
         );
+
 
         _server.SendMessageAsync(message);
 

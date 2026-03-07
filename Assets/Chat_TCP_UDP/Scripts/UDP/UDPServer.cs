@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -10,18 +11,14 @@ public class UDPServer : MonoBehaviour, IServer
     private UdpClient udpServer;
     private IPEndPoint remoteEndPoint;
 
-    private IMessageProcessor _messageProcessor;
-
     public event Action<NetworkMessage> OnMessageReceived;
     public event Action OnConnected;
     public event Action OnDisconnected;
 
     public bool isServerRunning { get; private set; }
 
-    public void Initialize(IMessageProcessor processor)
-    {
-        _messageProcessor = processor;
-    }
+    private UDPChunkSender chunkSender = new UDPChunkSender();
+    private UDPChunkReceiver chunkReceiver = new UDPChunkReceiver();
 
     public Task StartServer(int port)
     {
@@ -49,7 +46,6 @@ public class UDPServer : MonoBehaviour, IServer
                 }
                 catch (ObjectDisposedException)
                 {
-                    // Socket cerrado intencionalmente
                     break;
                 }
 
@@ -68,17 +64,17 @@ public class UDPServer : MonoBehaviour, IServer
 
                     byte[] connectedData = Encoding.UTF8.GetBytes("CONNECTED");
 
-                    await udpServer.SendAsync(
-                        connectedData,
-                        connectedData.Length,
-                        remoteEndPoint
-                    );
+                    await udpServer.SendAsync(connectedData, connectedData.Length, remoteEndPoint);
 
                     continue;
                 }
 
-                NetworkMessage message =
-                    _messageProcessor.Deserialize(result.Buffer);
+                byte[] fullMessage = chunkReceiver.HandlePacket(result.Buffer);
+
+                if (fullMessage == null)
+                    continue;
+
+                NetworkMessage message = DeserializeMessage(fullMessage);
 
                 Debug.Log($"[UDP Server] Received Type: {message.Type}");
 
@@ -100,15 +96,49 @@ public class UDPServer : MonoBehaviour, IServer
             return;
         }
 
-        byte[] data = _messageProcessor.Serialize(message);
+        byte[] data = SerializeMessage(message);
 
-        await udpServer.SendAsync(
-            data,
-            data.Length,
-            remoteEndPoint
-        );
+        if (chunkSender.NeedsChunking(data))
+        {
+            var packets = chunkSender.CreateChunks(data);
+
+            foreach (var packet in packets)
+            {
+                await udpServer.SendAsync(packet, packet.Length, remoteEndPoint);
+            }
+        }
+        else
+        {
+            await udpServer.SendAsync(data, data.Length, remoteEndPoint);
+        }
 
         Debug.Log($"[UDP Server] Sent Type: {message.Type}");
+    }
+
+    private byte[] SerializeMessage(NetworkMessage message)
+    {
+        using (MemoryStream ms = new MemoryStream())
+        using (BinaryWriter writer = new BinaryWriter(ms))
+        {
+            writer.Write((int)message.Type);
+            writer.Write(message.Data.Length);
+            writer.Write(message.Data);
+
+            return ms.ToArray();
+        }
+    }
+
+    private NetworkMessage DeserializeMessage(byte[] data)
+    {
+        using (MemoryStream ms = new MemoryStream(data))
+        using (BinaryReader reader = new BinaryReader(ms))
+        {
+            MessageType type = (MessageType)reader.ReadInt32();
+            int length = reader.ReadInt32();
+            byte[] messageData = reader.ReadBytes(length);
+
+            return new NetworkMessage(type, messageData);
+        }
     }
 
     public void Disconnect()

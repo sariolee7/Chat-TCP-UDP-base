@@ -1,3 +1,4 @@
+using System;
 using SFB;
 using System.Collections;
 using System.IO;
@@ -5,10 +6,9 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class ServerAudioUI : MonoBehaviour
+public class AudioUI : MonoBehaviour, IAudioUI
 {
     [Header("UI - Audio SEND")]
-    [SerializeField] private Button playSentAudioButton;
     [SerializeField] private Slider sentAudioSlider;
     [SerializeField] private AudioSource sentAudioSource;
 
@@ -17,12 +17,25 @@ public class ServerAudioUI : MonoBehaviour
     [SerializeField] private Slider receivedAudioSlider;
     [SerializeField] private AudioSource receivedAudioSource;
 
+    public event Action OnAudioLoaded;
+    public event Action OnAudioCleared;
+
     private AudioClip _loadedAudioClip;
     private AudioClip _receivedAudioClip;
+
+    void Awake()
+    {
+        playReceivedAudioButton.interactable = false;
+    }
 
     public bool HasAudio()
     {
         return _loadedAudioClip != null;
+    }
+
+    public AudioClip GetLoadedAudio()
+    {
+        return _loadedAudioClip;
     }
 
     public byte[] GetAudioBytes()
@@ -33,20 +46,11 @@ public class ServerAudioUI : MonoBehaviour
         return WavUtility.FromAudioClip(_loadedAudioClip);
     }
 
-    public void UpdateAudioSliders()
+
+    public void SetWaitingForAudio()
     {
-        UpdateSlider(sentAudioSource, sentAudioSlider);
-        UpdateSlider(receivedAudioSource, receivedAudioSlider);
+        playReceivedAudioButton.interactable = false;
     }
-
-    void UpdateSlider(AudioSource source, Slider slider)
-    {
-        if (source.clip == null)
-            return;
-
-        slider.value = source.time / source.clip.length;
-    }
-
     public void LoadAudioFromExplorer()
     {
         var extensions = new[]
@@ -89,9 +93,17 @@ public class ServerAudioUI : MonoBehaviour
                 _loadedAudioClip = DownloadHandlerAudioClip.GetContent(www);
                 sentAudioSource.clip = _loadedAudioClip;
 
-                Debug.Log("[UI-Server] Audio loaded");
+                OnAudioLoaded?.Invoke();
             }
         }
+    }
+
+    public void ClearAudio()
+    {
+        _loadedAudioClip = null;
+        sentAudioSource.clip = null;
+
+        OnAudioCleared?.Invoke();
     }
 
     public void PlaySentAudio()
@@ -114,5 +126,22 @@ public class ServerAudioUI : MonoBehaviour
     {
         _receivedAudioClip = WavUtility.ToAudioClip(data, 0, "receivedAudio");
         receivedAudioSource.clip = _receivedAudioClip;
+
+        playReceivedAudioButton.interactable = true;
+
+    }
+
+    public void UpdateAudioSliders()
+    {
+        UpdateSlider(sentAudioSource, sentAudioSlider);
+        UpdateSlider(receivedAudioSource, receivedAudioSlider);
+    }
+
+    void UpdateSlider(AudioSource source, Slider slider)
+    {
+        if (source.clip == null)
+            return;
+
+        slider.value = source.time / source.clip.length;
     }
 }

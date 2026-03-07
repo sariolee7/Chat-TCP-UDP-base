@@ -11,18 +11,11 @@ public class TCPServer : MonoBehaviour, IServer
     private TcpClient connectedClient;
     private NetworkStream networkStream;
 
-    private IMessageProcessor _messageProcessor;
-
     public bool isServerRunning { get; private set; }
 
     public event Action<NetworkMessage> OnMessageReceived;
     public event Action OnConnected;
     public event Action OnDisconnected;
-
-    public void Initialize(IMessageProcessor processor)
-    {
-        _messageProcessor = processor;
-    }
 
     public async Task StartServer(int port)
     {
@@ -48,6 +41,7 @@ public class TCPServer : MonoBehaviour, IServer
         {
             while (connectedClient != null && connectedClient.Connected)
             {
+                // Leer header
                 byte[] header = new byte[8];
                 await ReadExactAsync(header);
 
@@ -57,12 +51,14 @@ public class TCPServer : MonoBehaviour, IServer
                     MessageType type = (MessageType)reader.ReadInt32();
                     int length = reader.ReadInt32();
 
+                    // Leer payload
                     byte[] data = new byte[length];
                     await ReadExactAsync(data);
 
                     NetworkMessage message = new NetworkMessage(type, data);
 
                     OnMessageReceived?.Invoke(message);
+
                     Debug.Log($"[Server] Received {type} ({length} bytes)");
                 }
             }
@@ -97,11 +93,24 @@ public class TCPServer : MonoBehaviour, IServer
         if (networkStream == null || connectedClient == null || !connectedClient.Connected)
             return;
 
-        byte[] data = _messageProcessor.Serialize(message);
+        byte[] data = SerializeMessage(message);
 
         await networkStream.WriteAsync(data, 0, data.Length);
 
         Debug.Log($"[Server] Sent {message.Type} ({data.Length} bytes)");
+    }
+
+    private byte[] SerializeMessage(NetworkMessage message)
+    {
+        using (MemoryStream ms = new MemoryStream())
+        using (BinaryWriter writer = new BinaryWriter(ms))
+        {
+            writer.Write((int)message.Type);
+            writer.Write(message.Data.Length);
+            writer.Write(message.Data);
+
+            return ms.ToArray();
+        }
     }
 
     public void Disconnect()

@@ -1,13 +1,17 @@
+using System;
 using SFB;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ServerImageUI : MonoBehaviour
+public class ImageUI : MonoBehaviour, IImageUI
 {
     [Header("UI - Images")]
     [SerializeField] private RawImage receivedImage;
     [SerializeField] private RawImage sentImage;
+
+    public event Action OnImageLoaded;
+    public event Action OnImageCleared;
 
     private Texture2D _loadedTexture;
     private Texture2D _receivedTexture;
@@ -50,7 +54,15 @@ public class ServerImageUI : MonoBehaviour
         _loadedTexture = tex;
         sentImage.texture = _loadedTexture;
 
-        Debug.Log("[UI-Server] Image loaded");
+        OnImageLoaded?.Invoke();
+    }
+
+    public void ClearImage()
+    {
+        _loadedTexture = null;
+        sentImage.texture = null;
+
+        OnImageCleared?.Invoke();
     }
 
     public void SetReceivedImage(byte[] data)

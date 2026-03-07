@@ -191,6 +191,65 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!1 &156671020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 156671021}
+  - component: {fileID: 156671022}
+  m_Layer: 5
+  m_Name: ControllerUIPreview
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &156671021
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156671020}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 160614460}
+  - {fileID: 1155689739}
+  - {fileID: 768909109}
+  - {fileID: 1958992462}
+  - {fileID: 534087930}
+  - {fileID: 168544935}
+  m_Father: {fileID: 210814580}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &156671022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156671020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b72370b0b3c4f234e91f5cbfe1269afd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChatInputStateController
+  textUI: {fileID: 1212392272}
+  imageUI: {fileID: 1212392271}
+  audioUI: {fileID: 1212392270}
+  imagePreviewTarget: {x: 120, y: -115}
+  audioPreviewTarget: {x: 120, y: -201}
 --- !u!1 &160614457
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,6 +260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 160614460}
   - component: {fileID: 160614459}
+  - component: {fileID: 160614461}
   - component: {fileID: 160614458}
   m_Layer: 5
   m_Name: ImageSend
@@ -251,25 +311,38 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160614457}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 210814580}
+  m_Father: {fileID: 156671021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 299, y: 7}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 120, y: -305}
+  m_SizeDelta: {x: 200, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &160614461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160614457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
+  elementType: 1
 --- !u!1001 &168544934
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 210814580}
+    m_TransformParent: {fileID: 156671021}
     m_Modifications:
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_Pivot.x
@@ -321,23 +394,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 294
+      value: 485
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -117
+      value: -201
       objectReference: {fileID: 0}
     - target: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -442,19 +515,27 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4312646099016357188, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 168544939}
   m_SourcePrefab: {fileID: 100100000, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
 --- !u!224 &168544935 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3731238832408647396, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
   m_PrefabInstance: {fileID: 168544934}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &168544936 stripped
+--- !u!1 &168544936 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4312646099016357188, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
+  m_PrefabInstance: {fileID: 168544934}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &168544937 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 3943972177889809556, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
   m_PrefabInstance: {fileID: 168544934}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &168544937 stripped
+--- !u!114 &168544938 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7272394063116631730, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
   m_PrefabInstance: {fileID: 168544934}
@@ -465,17 +546,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
---- !u!114 &168544938 stripped
+--- !u!114 &168544939
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4680912840814815121, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
-  m_PrefabInstance: {fileID: 168544934}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 168544936}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
+  elementType: 2
 --- !u!1 &210814576
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,15 +656,10 @@ RectTransform:
   - {fileID: 1665891642}
   - {fileID: 801738044}
   - {fileID: 1916471513}
-  - {fileID: 534087930}
-  - {fileID: 1958992462}
-  - {fileID: 768909109}
-  - {fileID: 1155689739}
-  - {fileID: 160614460}
   - {fileID: 96105312}
   - {fileID: 627692069}
   - {fileID: 1043991239}
-  - {fileID: 168544935}
+  - {fileID: 156671021}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -599,6 +677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 534087930}
   - component: {fileID: 534087933}
+  - component: {fileID: 534087934}
   - component: {fileID: 534087932}
   - component: {fileID: 534087931}
   m_Layer: 5
@@ -615,18 +694,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534087929}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 848624593}
-  m_Father: {fileID: 210814580}
+  m_Father: {fileID: 156671021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -314, y: 19}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 304, y: -121}
+  m_SizeDelta: {x: 92.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &534087931
 MonoBehaviour:
@@ -722,6 +801,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534087929}
   m_CullTransparentMesh: 1
+--- !u!114 &534087934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534087929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
+  elementType: 5
 --- !u!1 &627692068
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,6 +1216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 768909109}
   - component: {fileID: 768909112}
+  - component: {fileID: 768909113}
   - component: {fileID: 768909111}
   - component: {fileID: 768909110}
   m_Layer: 5
@@ -1140,18 +1233,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 768909108}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1641331878}
-  m_Father: {fileID: 210814580}
+  m_Father: {fileID: 156671021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -111, y: 64}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 312, y: -154}
+  m_SizeDelta: {x: 74, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &768909110
 MonoBehaviour:
@@ -1247,6 +1340,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 768909108}
   m_CullTransparentMesh: 1
+--- !u!114 &768909113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768909108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
+  elementType: 4
 --- !u!1 &801738043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1802,17 +1908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
---- !u!114 &1043991241 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4680912840814815121, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
-  m_PrefabInstance: {fileID: 1043991237}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &1122908248
 GameObject:
   m_ObjectHideFlags: 0
@@ -2004,6 +2099,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1155689739}
   - component: {fileID: 1155689741}
+  - component: {fileID: 1155689742}
   - component: {fileID: 1155689740}
   - component: {fileID: 1155689738}
   m_Layer: 5
@@ -2121,18 +2217,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1155689737}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2095915661}
-  m_Father: {fileID: 210814580}
+  m_Father: {fileID: 156671021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 87, y: -171}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 121, y: -203}
+  m_SizeDelta: {x: 201.1, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1155689740
 MonoBehaviour:
@@ -2172,6 +2268,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1155689737}
   m_CullTransparentMesh: 1
+--- !u!114 &1155689742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1155689737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
+  elementType: 0
 --- !u!1 &1212392266
 GameObject:
   m_ObjectHideFlags: 0
@@ -2233,13 +2342,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1212392266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27a404dd82340a54c808c2406c55bbf9, type: 3}
+  m_Script: {fileID: 11500000, guid: 2793b8541ea52ab4bb837744d58455b0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ServerAudioUI
-  playSentAudioButton: {fileID: 168544938}
-  sentAudioSlider: {fileID: 168544937}
-  sentAudioSource: {fileID: 168544936}
-  playReceivedAudioButton: {fileID: 1043991241}
+  m_EditorClassIdentifier: Assembly-CSharp::AudioUI
+  sentAudioSlider: {fileID: 168544938}
+  sentAudioSource: {fileID: 168544937}
+  playReceivedAudioButton: {fileID: 1927596425}
   receivedAudioSlider: {fileID: 1043991240}
   receivedAudioSource: {fileID: 1043991238}
 --- !u!114 &1212392271
@@ -2251,9 +2359,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1212392266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 260b330e16cd0ce4b924a6fe33c164b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 86de77c71d684f349ade7a5e10b1028c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ServerImageUI
+  m_EditorClassIdentifier: Assembly-CSharp::ImageUI
   receivedImage: {fileID: 96105314}
   sentImage: {fileID: 160614458}
 --- !u!114 &1212392272
@@ -2265,9 +2373,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1212392266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 843a69e29a1ac2145b454477b35b67e1, type: 3}
+  m_Script: {fileID: 11500000, guid: da4dc84c5ec18a04a9448f2e75a18fac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ServerTextUI
+  m_EditorClassIdentifier: Assembly-CSharp::TextUI
   messageInput: {fileID: 1155689738}
   messageText: {fileID: 627692071}
 --- !u!1 &1436465545
@@ -2715,6 +2823,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1916471512}
   m_CullTransparentMesh: 1
+--- !u!114 &1927596425 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4680912840814815121, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
+  m_PrefabInstance: {fileID: 1043991237}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &1958992461
 GameObject:
   m_ObjectHideFlags: 0
@@ -2725,6 +2844,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1958992462}
   - component: {fileID: 1958992465}
+  - component: {fileID: 1958992466}
   - component: {fileID: 1958992464}
   - component: {fileID: 1958992463}
   m_Layer: 5
@@ -2741,18 +2861,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958992461}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1804538886}
-  m_Father: {fileID: 210814580}
+  m_Father: {fileID: 156671021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -111, y: 23}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 233, y: -154}
+  m_SizeDelta: {x: 72.9, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1958992463
 MonoBehaviour:
@@ -2848,6 +2968,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958992461}
   m_CullTransparentMesh: 1
+--- !u!114 &1958992466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958992461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbb38f2397df704d9d34aa7b480ab41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIChatElement
+  elementType: 3
 --- !u!1 &2010371538
 GameObject:
   m_ObjectHideFlags: 0
