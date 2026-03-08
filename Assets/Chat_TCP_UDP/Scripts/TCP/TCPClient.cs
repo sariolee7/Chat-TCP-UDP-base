@@ -14,6 +14,7 @@ public class TCPClient : MonoBehaviour, IClient
     public event Action<NetworkMessage> OnMessageReceived;
     public event Action OnConnected;
     public event Action OnDisconnected;
+    public event Action<bool, string> OnMessageSent;
 
     public async Task ConnectToServer(string ip, int port)
     {
@@ -35,7 +36,6 @@ public class TCPClient : MonoBehaviour, IClient
         {
             while (tcpClient != null && tcpClient.Connected)
             {
-                // Leer header
                 byte[] header = new byte[8];
                 await ReadExactAsync(header);
 
@@ -45,7 +45,6 @@ public class TCPClient : MonoBehaviour, IClient
                     MessageType type = (MessageType)reader.ReadInt32();
                     int length = reader.ReadInt32();
 
-                    // Leer payload
                     byte[] data = new byte[length];
                     await ReadExactAsync(data);
 
@@ -87,14 +86,24 @@ public class TCPClient : MonoBehaviour, IClient
         if (!isConnected || networkStream == null)
         {
             Debug.Log("[Client] Not connected to server");
+            OnMessageSent?.Invoke(false, "Not connected to server");
             return;
         }
 
         byte[] data = SerializeMessage(message);
 
-        await networkStream.WriteAsync(data, 0, data.Length);
+        try
+        {
+            await networkStream.WriteAsync(data, 0, data.Length);
 
-        Debug.Log($"[Client] Sent {message.Type} ({data.Length} bytes)");
+            Debug.Log($"[Client] Sent {message.Type} ({data.Length} bytes)");
+            OnMessageSent?.Invoke(true, null);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[Client] Send failed: {ex.Message}");
+            OnMessageSent?.Invoke(false, ex.Message);
+        }
     }
 
     private byte[] SerializeMessage(NetworkMessage message)

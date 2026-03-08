@@ -13,12 +13,18 @@ public class UIClient : MonoBehaviour
 
     [Header("Handlers")]
     [SerializeField] private TextUI textUI;
-    [SerializeField] private ImageUI ImageUI;
+    [SerializeField] private ImageUI imageUI;
     [SerializeField] private AudioUI audioUI;
+
+    [Header("Connection Status")]
+    [SerializeField] private MessageStatusUI connectionStatusUI;
+
+    private enum LastSentType { None, Text, Image, Audio }
+    private LastSentType _lastSentType = LastSentType.None;
 
     void Awake()
     {
-                if (ProtocolState.useTCP)
+        if (ProtocolState.useTCP)
         {
             Debug.Log("Cliente usando TCP");
             _client = (IClient)clientReferenceTCP;
@@ -33,8 +39,43 @@ public class UIClient : MonoBehaviour
     void Start()
     {
         _client.OnMessageReceived += HandleMessageReceived;
-        _client.OnConnected += () => Debug.Log("[UI-Client] Connected");
-        _client.OnDisconnected += () => Debug.Log("[UI-Client] Disconnected");
+        _client.OnConnected += HandleConnected;
+        _client.OnDisconnected += HandleDisconnected;
+        _client.OnMessageSent += HandleMessageSentResult;
+    }
+
+    void HandleConnected()
+    {
+        Debug.Log("[UI-Client] Connected");
+        if (connectionStatusUI != null)
+            connectionStatusUI.SetConnected();
+    }
+
+    void HandleDisconnected()
+    {
+        Debug.Log("[UI-Client] Disconnected");
+        if (connectionStatusUI != null)
+            connectionStatusUI.SetDisconnected();
+    }
+
+    void HandleMessageSentResult(bool success, string error)
+    {
+        switch (_lastSentType)
+        {
+            case LastSentType.Text:
+                if (success) textUI.SetLastMessageSent();
+                else textUI.SetLastMessageFailed(error);
+                break;
+            case LastSentType.Image:
+                if (success) imageUI.SetLastMessageSent();
+                else imageUI.SetLastMessageFailed(error);
+                break;
+            case LastSentType.Audio:
+                if (success) audioUI.SetLastMessageSent();
+                else audioUI.SetLastMessageFailed(error);
+                break;
+        }
+        _lastSentType = LastSentType.None;
     }
 
     public void ConnectClient()
@@ -42,16 +83,23 @@ public class UIClient : MonoBehaviour
         _client.ConnectToServer(serverAddress, serverPort);
     }
 
+    public void DisconnectClient()
+    {
+        if (_client != null && _client.isConnected)
+        {
+            _client.Disconnect();
+        }
+    }
+
     public void LoadImageFromExplorer()
     {
-        ImageUI.LoadImageFromExplorer();
+        imageUI.LoadImageFromExplorer();
     }
 
     public void LoadAudioFromExplorer()
     {
         audioUI.LoadAudioFromExplorer();
     }
-
 
     public void Send()
     {
@@ -61,93 +109,71 @@ public class UIClient : MonoBehaviour
             return;
         }
 
-        bool textSent = false;
-        bool imageSent = false;
-        bool audioSent = false;
-
         bool hasText = textUI.HasText();
-        bool hasImage = ImageUI.HasImage();
+        bool hasImage = imageUI.HasImage();
         bool hasAudio = audioUI.HasAudio();
 
+        if (!hasText && !hasImage && !hasAudio)
+        {
+            Debug.Log("Nothing to send");
+            return;
+        }
 
         if (hasText)
-            textSent = SendTextInternal();
+            SendText();
 
         if (hasImage)
-            imageSent = SendImageInternal();
-  
+            SendImage();
 
         if (hasAudio)
-            audioSent = SendAudioInternal();
+            SendAudio();
 
-
-        if (!textSent && !imageSent && !audioSent)
-            Debug.Log("Nothing to send");
-
-        if (imageSent)
-            ImageUI.ClearImage();
-
-        if (audioSent)
-            audioUI.ClearAudio();
-
-        ChatInputStateController.Instance.OnMessageSent();
-
+        if (ChatInputStateController.Instance != null)
+            ChatInputStateController.Instance.OnMessageSent();
     }
 
-    bool SendTextInternal()
+    void SendText()
     {
         string text = textUI.GetText();
-
-        byte[] textData = Encoding.UTF8.GetBytes(textUI.GetText());
-
-        NetworkMessage message = new NetworkMessage(
-            MessageType.Text,
-            textData
-        );
-
-        _client.SendMessageAsync(message);
+        byte[] textData = Encoding.UTF8.GetBytes(text);
+        NetworkMessage message = new NetworkMessage(MessageType.Text, textData);
 
         textUI.InstantiateSentText(text);
+        _lastSentType = LastSentType.Text;
 
+        _client.SendMessageAsync(message);
         textUI.ClearInput();
-
-        return true;
     }
 
-    bool SendImageInternal()
+    void SendImage()
     {
-        Texture2D loadedTexture = ImageUI.GetLoadedTexture();
+        Texture2D loadedTexture = imageUI.GetLoadedTexture();
         if (loadedTexture == null)
-            return false;
+            return;
 
         byte[] imageBytes = loadedTexture.EncodeToJPG(50);
+        NetworkMessage message = new NetworkMessage(MessageType.Image, imageBytes);
 
-        NetworkMessage message = new NetworkMessage(
-            MessageType.Image,
-            imageBytes
-        );
+        imageUI.InstantiateSentImage(loadedTexture);
+        _lastSentType = LastSentType.Image;
 
         _client.SendMessageAsync(message);
-
-        ImageUI.InstantiateSentImage(loadedTexture);
-
-        return true;
+        imageUI.ClearImage();
     }
 
-
-    bool SendAudioInternal()
+    void SendAudio()
     {
         byte[] audioBytes = audioUI.GetAudioBytes();
+        if (audioBytes == null)
+            return;
 
-        NetworkMessage message = new NetworkMessage(
-            MessageType.Audio,
-            audioBytes
-        );
+        NetworkMessage message = new NetworkMessage(MessageType.Audio, audioBytes);
+
+        audioUI.InstantiateSentAudio(audioBytes);
+        _lastSentType = LastSentType.Audio;
 
         _client.SendMessageAsync(message);
-        audioUI.InstantiateSentAudio(audioBytes);
-
-        return true;
+        audioUI.ClearAudio();
     }
 
     void HandleMessageReceived(NetworkMessage message)
@@ -155,21 +181,16 @@ public class UIClient : MonoBehaviour
         switch (message.Type)
         {
             case MessageType.Text:
-
                 string text = Encoding.UTF8.GetString(message.Data);
                 textUI.InstantiateReceivedText(text);
                 break;
 
             case MessageType.Image:
-
-                ImageUI.InstantiateReceivedImage(message.Data);
-
+                imageUI.InstantiateReceivedImage(message.Data);
                 break;
 
             case MessageType.Audio:
-
                 audioUI.InstantiateReceivedAudio(message.Data);
-
                 break;
         }
     }

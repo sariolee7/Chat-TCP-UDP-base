@@ -11,9 +11,12 @@ public class UDPServer : MonoBehaviour, IServer
     private UdpClient udpServer;
     private IPEndPoint remoteEndPoint;
 
+    public int MaxMessageSize = 2 * 1024 * 1024;
+
     public event Action<NetworkMessage> OnMessageReceived;
     public event Action OnConnected;
     public event Action OnDisconnected;
+    public event Action<bool, string> OnMessageSent;
 
     public bool isServerRunning { get; private set; }
 
@@ -93,26 +96,43 @@ public class UDPServer : MonoBehaviour, IServer
         if (!isServerRunning || remoteEndPoint == null || udpServer == null)
         {
             Debug.LogWarning("[UDP Server] No client connected.");
+            OnMessageSent?.Invoke(false, "No client connected");
             return;
         }
 
         byte[] data = SerializeMessage(message);
 
-        if (chunkSender.NeedsChunking(data))
+        if (data.Length > MaxMessageSize)
         {
-            var packets = chunkSender.CreateChunks(data);
+            Debug.LogWarning($"[UDP Server] Message too large: {data.Length} bytes (max: {MaxMessageSize})");
+            OnMessageSent?.Invoke(false, $"Message too large: {data.Length} bytes");
+            return;
+        }
 
-            foreach (var packet in packets)
+        try
+        {
+            if (chunkSender.NeedsChunking(data))
             {
-                await udpServer.SendAsync(packet, packet.Length, remoteEndPoint);
-            }
-        }
-        else
-        {
-            await udpServer.SendAsync(data, data.Length, remoteEndPoint);
-        }
+                var packets = chunkSender.CreateChunks(data);
 
-        Debug.Log($"[UDP Server] Sent Type: {message.Type}");
+                foreach (var packet in packets)
+                {
+                    await udpServer.SendAsync(packet, packet.Length, remoteEndPoint);
+                }
+            }
+            else
+            {
+                await udpServer.SendAsync(data, data.Length, remoteEndPoint);
+            }
+
+            Debug.Log($"[UDP Server] Sent Type: {message.Type}");
+            OnMessageSent?.Invoke(true, null);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[UDP Server] Send failed: {ex.Message}");
+            OnMessageSent?.Invoke(false, ex.Message);
+        }
     }
 
     private byte[] SerializeMessage(NetworkMessage message)

@@ -2,11 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class AudioMessageUI : MonoBehaviour
+public class ImageMessageUI : MonoBehaviour
 {
-    [SerializeField] private Button playButton;
-    [SerializeField] private Slider slider;
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private RawImage messageImage;
     [SerializeField] private Image statusImage;
     [SerializeField] private TMP_Text errorText;
 
@@ -14,34 +12,25 @@ public class AudioMessageUI : MonoBehaviour
     [SerializeField] private Sprite sentSprite;
     [SerializeField] private Sprite failedSprite;
 
-    private void Awake()
+    public void Initialize(Texture2D texture)
     {
-        playButton.onClick.AddListener(PlayAudio);
-    }
-
-    public void Initialize(byte[] audioBytes)
-    {
-        AudioClip clip = WavUtility.ToAudioClip(audioBytes, 0, "chatAudio");
-        audioSource.clip = clip;
+        if (messageImage != null)
+            messageImage.texture = texture;
 
         if (errorText != null)
             errorText.gameObject.SetActive(false);
     }
 
-    void PlayAudio()
+    public void Initialize(byte[] imageData)
     {
-        if (audioSource.clip == null)
-            return;
+        Texture2D tex = new Texture2D(2, 2);
+        tex.LoadImage(imageData);
 
-        audioSource.Play();
-    }
+        if (messageImage != null)
+            messageImage.texture = tex;
 
-    void Update()
-    {
-        if (audioSource.clip == null)
-            return;
-
-        slider.value = audioSource.time / audioSource.clip.length;
+        if (errorText != null)
+            errorText.gameObject.SetActive(false);
     }
 
     public void SetSent()
@@ -64,12 +53,13 @@ public class AudioMessageUI : MonoBehaviour
             errorText.text = error;
         }
     }
-     public void HideStatus()
+
+    public void HideStatus()
     {
         if (statusImage != null)
             statusImage.gameObject.SetActive(false);
+
         if (errorText != null)
             errorText.gameObject.SetActive(false);
     }
-
 }

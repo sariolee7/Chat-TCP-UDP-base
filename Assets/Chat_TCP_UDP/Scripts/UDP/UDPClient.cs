@@ -11,11 +11,14 @@ public class UDPClient : MonoBehaviour, IClient
     private UdpClient udpClient;
     private IPEndPoint remoteEndPoint;
 
+    public int MaxMessageSize = 2 * 1024 * 1024;
+
     public bool isConnected { get; private set; }
 
     public event Action<NetworkMessage> OnMessageReceived;
     public event Action OnConnected;
     public event Action OnDisconnected;
+    public event Action<bool, string> OnMessageSent;
 
     private UDPChunkSender chunkSender = new UDPChunkSender();
     private UDPChunkReceiver chunkReceiver = new UDPChunkReceiver();
@@ -88,26 +91,43 @@ public class UDPClient : MonoBehaviour, IClient
         if (!isConnected || remoteEndPoint == null || udpClient == null)
         {
             Debug.LogWarning("[UDP Client] Not connected.");
+            OnMessageSent?.Invoke(false, "Not connected to server");
             return;
         }
 
         byte[] data = SerializeMessage(message);
 
-        if (chunkSender.NeedsChunking(data))
+        if (data.Length > MaxMessageSize)
         {
-            var packets = chunkSender.CreateChunks(data);
+            Debug.LogWarning($"[UDP Client] Message too large: {data.Length} bytes (max: {MaxMessageSize})");
+            OnMessageSent?.Invoke(false, $"Message too large: {data.Length} bytes");
+            return;
+        }
 
-            foreach (var packet in packets)
+        try
+        {
+            if (chunkSender.NeedsChunking(data))
             {
-                await udpClient.SendAsync(packet, packet.Length, remoteEndPoint);
-            }
-        }
-        else
-        {
-            await udpClient.SendAsync(data, data.Length, remoteEndPoint);
-        }
+                var packets = chunkSender.CreateChunks(data);
 
-        Debug.Log($"[UDP Client] Sent Type: {message.Type}");
+                foreach (var packet in packets)
+                {
+                    await udpClient.SendAsync(packet, packet.Length, remoteEndPoint);
+                }
+            }
+            else
+            {
+                await udpClient.SendAsync(data, data.Length, remoteEndPoint);
+            }
+
+            Debug.Log($"[UDP Client] Sent Type: {message.Type}");
+            OnMessageSent?.Invoke(true, null);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[UDP Client] Send failed: {ex.Message}");
+            OnMessageSent?.Invoke(false, ex.Message);
+        }
     }
 
     private byte[] SerializeMessage(NetworkMessage message)

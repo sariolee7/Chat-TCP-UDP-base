@@ -2,11 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class AudioMessageUI : MonoBehaviour
+public class TextMessageUI : MonoBehaviour
 {
-    [SerializeField] private Button playButton;
-    [SerializeField] private Slider slider;
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private TMP_Text messageText;
     [SerializeField] private Image statusImage;
     [SerializeField] private TMP_Text errorText;
 
@@ -14,34 +12,13 @@ public class AudioMessageUI : MonoBehaviour
     [SerializeField] private Sprite sentSprite;
     [SerializeField] private Sprite failedSprite;
 
-    private void Awake()
+    public void Initialize(string text)
     {
-        playButton.onClick.AddListener(PlayAudio);
-    }
-
-    public void Initialize(byte[] audioBytes)
-    {
-        AudioClip clip = WavUtility.ToAudioClip(audioBytes, 0, "chatAudio");
-        audioSource.clip = clip;
+        if (messageText != null)
+            messageText.text = text;
 
         if (errorText != null)
             errorText.gameObject.SetActive(false);
-    }
-
-    void PlayAudio()
-    {
-        if (audioSource.clip == null)
-            return;
-
-        audioSource.Play();
-    }
-
-    void Update()
-    {
-        if (audioSource.clip == null)
-            return;
-
-        slider.value = audioSource.time / audioSource.clip.length;
     }
 
     public void SetSent()
@@ -64,12 +41,13 @@ public class AudioMessageUI : MonoBehaviour
             errorText.text = error;
         }
     }
-     public void HideStatus()
+
+    public void HideStatus()
     {
         if (statusImage != null)
             statusImage.gameObject.SetActive(false);
+
         if (errorText != null)
             errorText.gameObject.SetActive(false);
     }
-
 }
