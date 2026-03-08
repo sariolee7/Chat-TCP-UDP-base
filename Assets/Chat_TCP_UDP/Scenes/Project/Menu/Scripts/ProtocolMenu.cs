@@ -3,17 +3,29 @@ using UnityEngine.SceneManagement;
 
 public class ProtocolMenu : MonoBehaviour
 {
-    public void SelectTCP()
+    public void SelectClient()
+    {
+        Debug.Log("Select: Client");
+        SceneManager.LoadScene("Client");
+    }
+
+    public void SelectServer()
+    {
+        Debug.Log("Select: Server");
+        SceneManager.LoadScene("Server");
+    }
+
+        public void SelectTCP()
     {
         ProtocolState.useTCP = true;
-        Debug.Log("Protocolo seleccionado: TCP");
-        SceneManager.LoadScene("Cliente_Server");
+        Debug.Log("Select: TCP");
+
     }
 
     public void SelectUDP()
     {
         ProtocolState.useTCP = false;
-        Debug.Log("Protocolo seleccionado: UDP");
-        SceneManager.LoadScene("Cliente_Server");
+        Debug.Log("Select: UDP");
     }
+
 }

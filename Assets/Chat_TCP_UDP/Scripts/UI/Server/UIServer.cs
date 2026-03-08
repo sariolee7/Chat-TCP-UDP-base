@@ -1,5 +1,4 @@
 using System.Text;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class UIServer : MonoBehaviour
@@ -7,7 +6,8 @@ public class UIServer : MonoBehaviour
     public int serverPort = 5555;
 
     [Header("Network Reference")]
-    [SerializeField] private MonoBehaviour serverReference;
+    [SerializeField] private MonoBehaviour serverReferenceTCP;
+    [SerializeField] private MonoBehaviour serverReferenceUDP;
     private IServer _server;
 
     [Header("Handlers")]
@@ -17,7 +17,17 @@ public class UIServer : MonoBehaviour
 
     void Awake()
     {
-        _server = (IServer)serverReference;
+        if (ProtocolState.useTCP)
+        {
+            Debug.Log("Servidor usando TCP");
+            _server = (IServer)serverReferenceTCP;
+        }
+        else
+        {
+            Debug.Log("Servidor usando UDP");
+            _server = (IServer)serverReferenceUDP;
+        }
+
     }
 
     void Start()

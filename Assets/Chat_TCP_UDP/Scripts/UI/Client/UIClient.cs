@@ -7,7 +7,8 @@ public class UIClient : MonoBehaviour
     public string serverAddress = "127.0.0.1";
 
     [Header("Network Reference")]
-    [SerializeField] private MonoBehaviour clientReference;
+    [SerializeField] private MonoBehaviour clientReferenceTCP;
+    [SerializeField] private MonoBehaviour clientReferenceUDP;
     private IClient _client;
 
     [Header("Handlers")]
@@ -17,7 +18,16 @@ public class UIClient : MonoBehaviour
 
     void Awake()
     {
-        _client = (IClient)clientReference;
+                if (ProtocolState.useTCP)
+        {
+            Debug.Log("Cliente usando TCP");
+            _client = (IClient)clientReferenceTCP;
+        }
+        else
+        {
+            Debug.Log("Cliente usando UDP");
+            _client = (IClient)clientReferenceUDP;
+        }
     }
 
     void Start()

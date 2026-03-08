@@ -5,27 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Chat_TCP_UDP/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
-    path: Assets/Chat_TCP_UDP/Scenes/Project/Menu/TCP_UDP.unity
-    guid: d6dd05eae91946d4984d2b5a3605d286
   - enabled: 1
     path: Assets/Chat_TCP_UDP/Scenes/Project/Menu/Cliente_Server.unity
     guid: beac0e2ad5af31e4a91f88829e827ad2
   - enabled: 1
-    path: Assets/Chat_TCP_UDP/Scenes/TCP/Tcp_Client.unity
-    guid: 251bdeafc8b997f4ba6bf008e911a26b
+    path: Assets/Chat_TCP_UDP/Scenes/Project/Menu/Client.unity
+    guid: 0fcf99d777cb91b42ade179487b0d48a
   - enabled: 1
-    path: Assets/Chat_TCP_UDP/Scenes/TCP/Tcp_Server.unity
-    guid: 3cbd608580a8ff04d8bec87d1ea88be9
-  - enabled: 1
-    path: Assets/Chat_TCP_UDP/Scenes/UDP/Udp_Client.unity
-    guid: 93afb3f38a82c4a439139df1a5c6c8a4
-  - enabled: 1
-    path: Assets/Chat_TCP_UDP/Scenes/UDP/Udp_Server.unity
-    guid: b319518943c99434eb6a5704ed8dcdda
+    path: Assets/Chat_TCP_UDP/Scenes/Project/Menu/Server.unity
+    guid: 1a670e107efae5446a2fa78bec39e289
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
