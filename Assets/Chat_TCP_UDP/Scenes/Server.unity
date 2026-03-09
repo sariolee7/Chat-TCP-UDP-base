@@ -154,7 +154,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -23, y: -756}
+  m_AnchoredPosition: {x: -23, y: -953.4}
   m_SizeDelta: {x: 800, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &82848670
@@ -1765,8 +1765,8 @@ MonoBehaviour:
   chatContent: {fileID: 1402165652}
   sentAudioPrefab: {fileID: 4312646099016357188, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
   receivedAudioPrefab: {fileID: 4312646099016357188, guid: 9238748b585e6bf408ead417a279b5b1, type: 3}
-  sentColor: {r: 0.3, g: 0.6, b: 1, a: 1}
-  receivedColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+  sentColor: {r: 1, g: 0.86666673, b: 0.7686275, a: 1}
+  receivedColor: {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 1}
 --- !u!114 &1298578533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1783,8 +1783,8 @@ MonoBehaviour:
   chatContent: {fileID: 1402165652}
   sentImagePrefab: {fileID: 8181883031041403908, guid: 459b78db123c0864baa62dd77d379e5c, type: 3}
   receivedImagePrefab: {fileID: 8181883031041403908, guid: 459b78db123c0864baa62dd77d379e5c, type: 3}
-  sentColor: {r: 0.3, g: 0.6, b: 1, a: 1}
-  receivedColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+  sentColor: {r: 1, g: 0.86666673, b: 0.7686275, a: 1}
+  receivedColor: {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 1}
 --- !u!114 &1298578534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1801,8 +1801,8 @@ MonoBehaviour:
   chatContent: {fileID: 1402165652}
   sentTextPrefab: {fileID: 5729930912685806607, guid: e4ceb2fd82ec27f46b2d7d57ce54042a, type: 3}
   receivedTextPrefab: {fileID: 5729930912685806607, guid: e4ceb2fd82ec27f46b2d7d57ce54042a, type: 3}
-  sentColor: {r: 0.3, g: 0.6, b: 1, a: 1}
-  receivedColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+  sentColor: {r: 1, g: 0.86827415, b: 0.76862746, a: 1}
+  receivedColor: {r: 0.7433963, g: 0.7433963, b: 0.7433963, a: 1}
 --- !u!114 &1298578535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2759,6 +2759,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3385791320188968357, guid: ef1bd018ebad4c145b35c129eadfaa54, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 0d499c61b392b3044980b4c03c4db093, type: 2}
+    - target: {fileID: 3385791320188968357, guid: ef1bd018ebad4c145b35c129eadfaa54, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2479294831073623631, guid: 0d499c61b392b3044980b4c03c4db093, type: 2}
+    - target: {fileID: 5514344015982660857, guid: ef1bd018ebad4c145b35c129eadfaa54, type: 3}
+      propertyPath: m_GlobalFontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 0d499c61b392b3044980b4c03c4db093, type: 2}
     - target: {fileID: 6887186303721367337, guid: ef1bd018ebad4c145b35c129eadfaa54, type: 3}
       propertyPath: m_Name
       value: InputContainerText
