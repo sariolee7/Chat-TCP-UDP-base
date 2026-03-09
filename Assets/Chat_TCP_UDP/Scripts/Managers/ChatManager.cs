@@ -15,6 +15,7 @@ public class ChatManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    //The exit button works both in Unity and in the application
     public void QuitApplication()
     {
 #if UNITY_EDITOR
