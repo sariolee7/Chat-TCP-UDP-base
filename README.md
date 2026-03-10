@@ -23,7 +23,9 @@
 - UI independiente para servidor y cliente
 - Explorador de archivos integrado
 - Visualización en tiempo real de conexiones
+  
 ---
+
 
 ## Organización de carpetas
 
@@ -48,6 +50,7 @@ Chat_TCP_UDP/
 ├── INDICE.md              # Índice de la documentación
 └── otros recursos (mp3, etc.)
 ```
+---
 
 
 ## Tabla de scripts y su función
@@ -71,6 +74,8 @@ Chat_TCP_UDP/
 
 > (Otros scripts auxiliares como `TextUI`, `ImageUI` y `AudioUI` están en carpetas UI.)
 
+---
+
 ## Comparación de protocolos TCP vs UDP
 
 | Característica         | TCP                                     | UDP                                      |
@@ -86,6 +91,8 @@ Chat_TCP_UDP/
 **Nota:** El módulo UDP añade `UDPChunkSender/Receiver` para permitir envíos de imágenes/audio
 que exceden el tamaño de paquete típico, lo cual sería manejado automáticamente por TCP.
 
+---
+
 ## Instrucciones de uso
 
 1. Ejecuta la escena principal de Unity.
@@ -97,6 +104,7 @@ que exceden el tamaño de paquete típico, lo cual sería manejado automáticame
 7. Pulsa enviar. El contenido aparecerá en la ventana de chat del otro extremo.
 8. Para desconectar, cierra la aplicación o presiona el botón de desconexión (no implementado).
 
+---
 
 ## Arquitectura
 
