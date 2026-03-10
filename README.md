@@ -40,10 +40,9 @@ Chat_TCP_UDP/
 │   ├── TCP/               # Implementaciones TCP client/server
 │   ├── UDP/               # Implementaciones UDP client/server + chunking
 │   ├── UI/                # Componentes de la interfaz (Client/Server, chat elements)
-│   │   ├── Client/
-│   │   ├── Server/
-│   │   └── ObjectsChat/   # Elementos reutilizables (botones, previews)
-│   └── Video/             # Código opcional para envío de vídeo vía UDP
+│       ├── Client/
+│       ├── Server/
+│       └── ObjectsChat/   # Elementos reutilizables (botones, previews)
 ├── GUIA_RAPIDA.md         # Manual rápido para usuarios
 ├── DOCUMENTACION.md       # Documentación para desarrolladores
 ├── ARQUITECTURA_AVANZADA.md # Documentación profunda (este archivo se complementa)
@@ -78,6 +77,14 @@ Chat_TCP_UDP/
 
 ## Comparación de protocolos TCP vs UDP
 
+## Lógica del Chunking (UDP y TCP)
+
+- **UDP:** Cuando un mensaje supera el tamaño de paquete (`CHUNK_SIZE` = 1000 bytes), `UDPChunkSender` lo divide en paquetes etiquetados con un marcador especial (-1), id de mensaje, índice y total de fragmentos. Cada paquete se envía individualmente. En el receptor, `UDPChunkReceiver.HandlePacket` revisa el marcador; si no existe, el paquete se procesa directamente. Si está presente, agrupa los fragmentos en un buffer, y al completar todos los pedazos reconstruye el mensaje completo que luego se deserializa a `NetworkMessage`.
+
+- **TCP:** El TCP no requiere fragmentación manual porque el protocolo ofrece un flujo continuo. Sin embargo, el sistema implementa un encabezado fijo de 8 bytes con tipo + longitud para permitir leer exactamente la cantidad esperada. La función `ReadExactAsync` garantiza que se lea el tamaño correcto antes de procesar el mensaje. Esta mecánica actúa como una forma de "chunking" lógico dentro del flujo TCP.
+
+
+  
 | Característica         | TCP                                     | UDP                                      |
 |------------------------|-----------------------------------------|------------------------------------------|
 | Orientación            | Conexión (handshake)                    | No conexión (datagramas)                |
@@ -137,3 +144,11 @@ que exceden el tamaño de paquete típico, lo cual sería manejado automáticame
 ```
 
 ---
+
+## Requisitos y Dependencias
+
+- **Unity 2020+** (proyecto configurado para URP, TextMeshPro)
+- **.NET 4.x** compatibilidad en Player Settings para sockets TCP/UDP
+- Permisos de red en la plataforma de despliegue (firewall, Android/iOS)
+- Paquetes de Unity necesarios: TextMeshPro, InputSystem (opcional para UI)
+- No se requieren librerías externas; todo el transporte usa `System.Net`.
