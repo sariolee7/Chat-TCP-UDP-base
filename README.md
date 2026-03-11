@@ -145,3 +145,10 @@ que exceden el tamaño de paquete típico, lo cual sería manejado automáticame
 ```
 
 ---
+
+## Interfaz del proyecto
+
+![Interfaz](Images/Start.png)
+![Interfaz](Images/TCP_UDP.png)
+![Interfaz](Images/Cliente.png)
+![Interfaz](Images/Server.png)
