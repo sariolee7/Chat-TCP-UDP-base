@@ -78,6 +78,14 @@ Chat_TCP_UDP/
 
 ## Comparación de protocolos TCP vs UDP
 
+## Lógica del Chunking (UDP y TCP)
+
+- **UDP:** Cuando un mensaje supera el tamaño de paquete (`CHUNK_SIZE` = 1000 bytes), `UDPChunkSender` lo divide en paquetes etiquetados con un marcador especial (-1), id de mensaje, índice y total de fragmentos. Cada paquete se envía individualmente. En el receptor, `UDPChunkReceiver.HandlePacket` revisa el marcador; si no existe, el paquete se procesa directamente. Si está presente, agrupa los fragmentos en un buffer, y al completar todos los pedazos reconstruye el mensaje completo que luego se deserializa a `NetworkMessage`.
+
+- **TCP:** El TCP no requiere fragmentación manual porque el protocolo ofrece un flujo continuo. Sin embargo, el sistema implementa un encabezado fijo de 8 bytes con tipo + longitud para permitir leer exactamente la cantidad esperada. La función `ReadExactAsync` garantiza que se lea el tamaño correcto antes de procesar el mensaje. Esta mecánica actúa como una forma de "chunking" lógico dentro del flujo TCP.
+
+
+
 | Característica         | TCP                                     | UDP                                      |
 |------------------------|-----------------------------------------|------------------------------------------|
 | Orientación            | Conexión (handshake)                    | No conexión (datagramas)                |
