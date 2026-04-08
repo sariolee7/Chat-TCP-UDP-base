@@ -2083,6 +2083,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3650792277554060393, guid: df1314d8ee6316f44acd2e37fe646f20, type: 3}
+      propertyPath: m_HorizontalScrollbarSpacing
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 4254170981526418148, guid: df1314d8ee6316f44acd2e37fe646f20, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -2172,8 +2176,8 @@ MonoBehaviour:
   connectionStatusText: {fileID: 798560386}
   connectedSprite: {fileID: 21300000, guid: f5eb70c916ae48345999cef9047a19c5, type: 3}
   disconnectedSprite: {fileID: 21300000, guid: ccac975ead7c39443a13ee0f0d018ea1, type: 3}
-  connectedColor: {r: 0, g: 1, b: 0, a: 1}
-  disconnectedColor: {r: 1, g: 0, b: 0, a: 1}
+  connectedColor: {r: 0, g: 0.5529412, b: 0, a: 1}
+  disconnectedColor: {r: 0.5471698, g: 0, b: 0, a: 1}
 --- !u!1 &2109812803
 GameObject:
   m_ObjectHideFlags: 0
